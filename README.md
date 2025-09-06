@@ -12,3 +12,4 @@
 #### Pull requests & Merging strategy:
 * A PR needs one approval before being merged
 * Merging strategy: squash and merge
+* No pull requests to main will be approved, until the changes are tested in develop
