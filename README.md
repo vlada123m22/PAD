@@ -338,5 +338,76 @@ Manages vote casting, counting, voting history, and announces results each game 
 
 ---
 
+# Database Changes for Task Service and Voting Service
+
+This document describes the expected changes in the database when the microservice endpoints for Task Service and Voting Service are invoked.
+
+---
+
+## Task Service Database Changes
+
+### POST /tasks/assign
+
+- **Action:** Insert or update records in the `TasksAssigned` table.
+- **Details:**
+  - Link user IDs with assigned task IDs, roles, careers, and game day.
+  - Initialize task status flags, such as `completed = false`.
+  - Store required items and location information for each task.
+- **Additional:** May log assignment events for auditing purposes.
+
+### POST /tasks/complete
+
+- **Action:** Update task completion status.
+- **Details:**
+  - Mark the task as completed (`completed = true`) in `TasksAssigned`.
+  - Record the completion timestamp (`completionTime`).
+  - Store additional task completion details (e.g., item usage, interactions) in a `TaskDetails` or `TaskEvents` table.
+- **Additional:** May insert related entries to a `Rumors` table to trigger rumor generation.
+
+### GET /tasks/status
+
+- Read-only operation; no database changes occur.
+
+---
+
+## Voting Service Database Changes
+
+### POST /votes/cast
+
+- **Action:** Insert a new vote record.
+- **Details:**
+  - Insert a row into the `Votes` table with `voterId`, `targetId`, and `day`.
+  - May update vote tallies or logs for audit purposes.
+
+### GET /votes/results
+
+- Read-only operation; aggregates votes without modifying data.
+
+### GET /votes/history
+
+- Read-only operation; fetches voting history without modifying data.
+
+### Post-Vote Processing (after vote tallying)
+
+- **Action:** Update player elimination status.
+- **Details:**
+  - Mark voted-out players in the `Players` or `UserStatus` table.
+  - Record elimination timestamps or related metadata.
+
+---
+
+## Example Table Structures
+
+| Table Name      | Description                        | Key Fields                                      |
+|-----------------|----------------------------------|------------------------------------------------|
+| TasksAssigned   | Assigned tasks per user           | userId, taskId, role, career, day, completed, completionTime |
+| TaskDetails     | Task completion auxiliary data   | taskId, userId, details (JSON or structured)  |
+| Votes           | Records user votes                | voterId, targetId, day                          |
+| Players         | Tracks player statuses            | userId, status, votedOutDate                    |
+| Rumors          | Stores rumors triggered by tasks | rumorId, taskId, content                        |
+
+---
+
+This documentation provides a clear overview of how service endpoints impact the underlying database schema and data. Proper indexing and transactional integrity are assumed to maintain consistency.
 
 ---
