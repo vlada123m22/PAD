@@ -160,4 +160,183 @@ The Voting Service resolves **democratic decisions** during the Voting phase.
 
 It owns vote data but not the broader consequences.
 
+
+
+
+
+
+# Communication Contract for Task Service and Voting Service
+
+## Task Service Communication Contract
+
+**Purpose:**  
+Assign tasks to players based on roles and careers, track task completion, and report task events which may influence game rumors.
+
+### Endpoints
+
+- **Assign Tasks**
+
+  - `POST /tasks/assign`
+
+  - **Request JSON:**
+    ```
+    {
+      "userId": "string",
+      "role": "string",
+      "career": "string",
+      "day": "integer"
+    }
+    ```
+
+  - **Response JSON:**
+    ```
+    {
+      "tasks": [
+        {
+          "taskId": "string",
+          "description": "string",
+          "requiredItems": ["string"],
+          "location": "string"
+        }
+      ]
+    }
+    ```
+
+  - _Description:_ Assigns tasks to the user for the game day based on role and career.
+
+- **Report Task Completion**
+
+  - `POST /tasks/complete`
+
+  - **Request JSON:**
+    ```
+    {
+      "userId": "string",
+      "taskId": "string",
+      "completionTime": "timestamp",
+      "details": {}
+    }
+    ```
+
+  - **Response JSON:**
+    ```
+    {
+      "status": "success"
+    }
+    ```
+
+  - _Description:_ Reports completion of a task by a user; triggers rumor generation.
+
+- **Get Task Status**
+
+  - `GET /tasks/status?userId={userId}&day={day}`
+
+  - **Response JSON:**
+    ```
+    {
+      "tasks": [
+        {
+          "taskId": "string",
+          "completed": true,
+          "completionTime": "timestamp"
+        }
+      ]
+    }
+    ```
+
+  - _Description:_ Retrieves status of assigned tasks for a user on a given day.
+
+### Communication with Other Services
+
+- Publishes task-related rumor information to Rumors Service.  
+- Receives role and career data from Character Service.  
+- May utilize Shop Service for item details in task requirements.
+
+---
+
+## Voting Service Communication Contract
+
+**Purpose:**  
+Manages vote casting, counting, voting history, and announces results each game day.
+
+### Endpoints
+
+- **Cast Vote**
+
+  - `POST /votes/cast`
+
+  - **Request JSON:**
+    ```
+    {
+      "voterId": "string",
+      "targetId": "string",
+      "day": "integer"
+    }
+    ```
+
+  - **Response JSON:**
+    ```
+    {
+      "status": "success",
+      "message": "Vote recorded"
+    }
+    ```
+
+  - _Description:_ Records a vote from a user targeting another user for a specific game day.
+
+- **Get Vote Results**
+
+  - `GET /votes/results?day={day}`
+
+  - **Response JSON:**
+    ```
+    {
+      "day": "integer",
+      "results": [
+        {
+          "targetId": "string",
+          "votesCount": "integer"
+        }
+      ],
+      "votedOutUserId": "string"
+    }
+    ```
+
+  - _Description:_ Retrieves vote results and reveals the eliminated player for the specified day.
+
+- **Get User Vote History**
+
+  - `GET /votes/history?voterId={voterId}`
+
+  - **Response JSON:**
+    ```
+    {
+      "votes": [
+        {
+          "day": "integer",
+          "targetId": "string"
+        }
+      ]
+    }
+    ```
+
+  - _Description:_ Retrieves voting history of a particular user.
+
+### Communication with Other Services
+
+- Notifies Game Service of eliminated player after vote counting.  
+- Receives player status and eligibility data from Game Service.
+
+---
+
+## Data Formats and Conventions
+
+- All communication uses JSON format for requests and responses.  
+- Timestamps follow ISO 8601 format (e.g., "2025-09-08T21:37:00Z").  
+- Identifiers (userId, taskId, etc.) are strings, preferably UUIDs.  
+- Clear and descriptive error messages should accompany failure responses (not detailed here).
+
+---
+
+
 ---
