@@ -1,3 +1,6 @@
 [submodule "Vlada"]
 	path = Vlada
 	url = https://github.com/vlada123m22/PAD-Vlada-5.git
+[submodule "UserManagementService"]
+	path = UserManagementService
+	url = https://github.com/nadea-b/UserManagementService.git
