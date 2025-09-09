@@ -4,3 +4,6 @@
 [submodule "UserManagementService"]
 	path = UserManagementService
 	url = https://github.com/nadea-b/UserManagementService.git
+[submodule "GameService"]
+	path = GameService
+	url = https://github.com/nadea-b/GameService.git
