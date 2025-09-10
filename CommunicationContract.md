@@ -214,8 +214,7 @@
   "itemId": 1,
   "quantity": 1
 }
-
-
+```
 
 **Success Response (200 OK):**
 
@@ -497,6 +496,7 @@
   "lobbyId": 2001,
   "locationId": 2
 }
+```
 
 **Success Response (200 OK):**
 
