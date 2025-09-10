@@ -11,3 +11,6 @@
 [submodule "voting_service"]
 	path = voting_service
 	url = https://github.com/vlada123m22/voting_service.git
+[submodule "Communication_Service"]
+	path = Communication_Service
+	url = https://github.com/Liarinn/Communication_Service.git
