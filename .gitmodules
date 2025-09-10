@@ -1,7 +1,3 @@
-[submodule "Vlada"]
-	path = Vlada
-	url = https://github.com/vlada123m22/PAD-Vlada-5.git
-
 [submodule "task_sservice"]
 	path = task_sservice
 	url = https://github.com/vlada123m22/task_service.git
@@ -12,3 +8,6 @@
 [submodule "GameService"]
 	path = GameService
 	url = https://github.com/nadea-b/GameService.git
+[submodule "voting_service"]
+	path = voting_service
+	url = https://github.com/vlada123m22/voting_service.git
