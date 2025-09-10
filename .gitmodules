@@ -1,3 +1,9 @@
 [submodule "Vlada"]
 	path = Vlada
 	url = https://github.com/vlada123m22/PAD-Vlada-5.git
+[submodule "TownService"]
+	path = TownService
+	url = https://github.com/livia994/TownService.git
+[submodule "CharacterService"]
+	path = CharacterService
+	url = https://github.com/livia994/CharacterService.git
