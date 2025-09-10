@@ -14,3 +14,6 @@
 [submodule "Communication_Service"]
 	path = Communication_Service
 	url = https://github.com/Liarinn/Communication_Service.git
+[submodule "RumorsService"]
+	path = RumorsService
+	url = https://github.com/Liarinn/Rumors_Service.git
