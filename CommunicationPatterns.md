@@ -54,6 +54,16 @@ For communication, we use **REST APIs, Events, and Message Queues**. REST is the
 ### Communication Service – Java | WebSockets
 - **Responsibilities:** Provides player chat, private channels, and rumor relays.  
 - **Why Java?** Java’s concurrency model and stability make it a good fit for scalable, long-running communication services.  
+
+### Rumors Service – JavaScript (Node.js) | Message Queue
+- **Responsibilities:** Generates and distributes rumors when players meet.  
+- **Why JavaScript?** Simple and flexible for random generation logic.  
+- **Why Message Queue?** Ensures rumor creation doesn’t block the main game flow.  
+- **Trade-off:** Queues add infrastructure complexity, but they keep gameplay smooth.  
+
+### Communication Service – JavaScript (Node.js) | WebSockets
+- **Responsibilities:** Provides player chat, private channels, and rumor relays.  
+- **Why JavaScript?** Node.js is designed for handling many simultaneous connections.  
 - **Why WebSockets?** Enables instant, real-time chat between players.  
 - **Trade-off:** WebSockets are harder to scale than REST, but they are essential for live communication.  
 
