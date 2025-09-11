@@ -1,6 +1,6 @@
 # Technologies and Communication Patterns
 
-Our project uses a **microservice architecture**, where each service is built using the programming language that ibest suits its role. The main languages for our project are **Java, C#, and JavaScript**.
+Our project uses a **microservice architecture**, where each service is built using the programming language that best suits its role. The main languages for our project are **Java, C#, and JavaScript**.
 
 For communication, we rely on **REST APIs, Events, and Message Queues**. REST is the go-to for most services because it’s simple and reliable. Events come into play when several services need to be notified at the same time, while Message Queues are used to handle work that doesn’t need to happen right away.
 **WebSockets** are reserved for chat in the Communication Service, since that’s where real-time interaction really matters.
@@ -54,8 +54,14 @@ For communication, we rely on **REST APIs, Events, and Message Queues**. REST is
 ### Communication Service – Java | WebSockets
 - **Responsibilities:** Handles player chat, private channels, and sharing rumors.
 - **Why Java?** Java’s reliability and ability to manage many tasks at once make it well-suited for large communication services.
-- **Why WebSockets?** Enables instant, real-time chat between players.  
-- **Trade-off:** WebSockets are harder to scale than REST, but they are essential for live communication.  
+- **Why WebSockets?** Enables instant, real-time chat between players.
+- **Trade-off:** WebSockets are harder to scale than REST, but they are essential for live communication.
+
+### Rumors Service – JavaScript (Node.js) | Message Queue
+- **Responsibilities:** Generates and distributes rumors when players meet.  
+- **Why JavaScript?** Simple and flexible for random generation logic.  
+- **Why Message Queue?** Ensures rumor creation doesn’t block the main game flow.  
+- **Trade-off:** Queues add infrastructure complexity, but they keep gameplay smooth.   
 
 ### Task Service – Java | REST API + Events
 - **Responsibilities:** Assigns daily tasks and rewards.  
