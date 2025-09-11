@@ -9,11 +9,11 @@ For communication, we use **REST APIs, Events, and Message Queues**. REST is the
 
 ## Services Overview
 
-### User Management Service – Go | REST API
+### User Management Service – JavaScript (Node.js) | REST API
 - **Responsibilities:** Handles accounts, balances, authentication, and rewards.  
-- **Why Go?** Fast, lightweight, and efficient for services with many small requests.  
-- **Why REST?** Simple and widely supported.  
-- **Trade-off:** REST is not the fastest protocol, but its reliability makes it a strong fit for core services.  
+- **Why JavaScript?** Node.js is well-suited for handling many concurrent requests with non-blocking I/O.  
+- **Why REST?** Simple and widely supported across clients and services.  
+- **Trade-off:** REST is not the fastest protocol, but its reliability and ecosystem support make it a strong fit for core services.  
 
 ### Game Service – JavaScript (Node.js) | REST API
 - **Responsibilities:** Controls phases, rules, win conditions, and player states.  
@@ -45,15 +45,15 @@ For communication, we use **REST APIs, Events, and Message Queues**. REST is the
 - **Why REST?** Inventory lookups and disguise management do not need real-time speed.  
 - **Trade-off:** REST may be slower, but these updates are not time-critical.  
 
-### Rumors Service – JavaScript (Node.js) | Message Queue
+### Rumors Service – Java | Message Queue
 - **Responsibilities:** Generates and distributes rumors when players meet.  
-- **Why JavaScript?** Simple and flexible for random generation logic.  
+- **Why Java?** Strong type safety and mature ecosystem make it reliable for implementing complex rule-based logic.  
 - **Why Message Queue?** Ensures rumor creation doesn’t block the main game flow.  
 - **Trade-off:** Queues add infrastructure complexity, but they keep gameplay smooth.  
 
-### Communication Service – JavaScript (Node.js) | WebSockets
+### Communication Service – Java | WebSockets
 - **Responsibilities:** Provides player chat, private channels, and rumor relays.  
-- **Why JavaScript?** Node.js is designed for handling many simultaneous connections.  
+- **Why Java?** Java’s concurrency model and stability make it a good fit for scalable, long-running communication services.  
 - **Why WebSockets?** Enables instant, real-time chat between players.  
 - **Trade-off:** WebSockets are harder to scale than REST, but they are essential for live communication.  
 
