@@ -17,3 +17,9 @@
 [submodule "RumorsService"]
 	path = RumorsService
 	url = https://github.com/Liarinn/Rumors_Service.git
+[submodule "TownService"]
+	path = TownService
+	url = https://github.com/livia994/TownService.git
+[submodule "CharacterService"]
+	path = CharacterService
+	url = https://github.com/livia994/CharacterService.git
