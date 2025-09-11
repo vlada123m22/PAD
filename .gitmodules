@@ -7,3 +7,27 @@
 [submodule "Shop-Service"]
 	path = Shop-Service
 	url = https://github.com/Ernu-Catalina/Shop-Service.git
+[submodule "task_sservice"]
+	path = task_sservice
+	url = https://github.com/vlada123m22/task_service.git
+[submodule "UserManagementService"]
+	path = UserManagementService
+	url = https://github.com/nadea-b/UserManagementService.git
+[submodule "GameService"]
+	path = GameService
+	url = https://github.com/nadea-b/GameService.git
+[submodule "voting_service"]
+	path = voting_service
+	url = https://github.com/vlada123m22/voting_service.git
+[submodule "Communication_Service"]
+	path = Communication_Service
+	url = https://github.com/Liarinn/Communication_Service.git
+[submodule "RumorsService"]
+	path = RumorsService
+	url = https://github.com/Liarinn/Rumors_Service.git
+[submodule "TownService"]
+	path = TownService
+	url = https://github.com/livia994/TownService.git
+[submodule "CharacterService"]
+	path = CharacterService
+	url = https://github.com/livia994/CharacterService.git
