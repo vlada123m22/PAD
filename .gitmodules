@@ -1,6 +1,34 @@
+<<<<<<< HEAD
 [submodule "Vlada"]
 	path = Vlada
 	url = https://github.com/vlada123m22/PAD-Vlada-5.git
 [submodule "UserManagementService"]
 	path = UserManagementService
 	url = https://github.com/nadea-b/UserManagementService.git
+=======
+[submodule "task_sservice"]
+	path = task_sservice
+	url = https://github.com/vlada123m22/task_service.git
+
+[submodule "UserManagementService"]
+	path = UserManagementService
+	url = https://github.com/nadea-b/UserManagementService.git
+[submodule "GameService"]
+	path = GameService
+	url = https://github.com/nadea-b/GameService.git
+[submodule "voting_service"]
+	path = voting_service
+	url = https://github.com/vlada123m22/voting_service.git
+[submodule "Communication_Service"]
+	path = Communication_Service
+	url = https://github.com/Liarinn/Communication_Service.git
+[submodule "RumorsService"]
+	path = RumorsService
+	url = https://github.com/Liarinn/Rumors_Service.git
+[submodule "TownService"]
+	path = TownService
+	url = https://github.com/livia994/TownService.git
+[submodule "CharacterService"]
+	path = CharacterService
+	url = https://github.com/livia994/CharacterService.git
+>>>>>>> 28e364662475432d5c69a3d0b53011af8c95bf70
