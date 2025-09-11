@@ -7,12 +7,12 @@
 [submodule "Shop-Service"]
 	path = Shop-Service
 	url = https://github.com/Ernu-Catalina/Shop-Service.git
-[submodule "task_sservice"]
-	path = task_sservice
-	url = https://github.com/vlada123m22/task_service.git
 [submodule "UserManagementService"]
 	path = UserManagementService
 	url = https://github.com/nadea-b/UserManagementService.git
+[submodule "task_sservice"]
+	path = task_sservice
+	url = https://github.com/vlada123m22/task_service.git
 [submodule "GameService"]
 	path = GameService
 	url = https://github.com/nadea-b/GameService.git
