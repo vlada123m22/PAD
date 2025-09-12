@@ -1,45 +1,37 @@
-## User Management Service
-
 ### Register User  
-**POST** /api/auth/register
+**POST** `/api/users`  
 
-**Description:** Creates a new user account and returns a JWT.  
+**Description:** Creates a new user account.  
 
 **Payload:**  
 ```json
 {
-  "username": "string",
   "email": "string",
+  "username": "string",
   "password": "string",
-  "displayName": "string (optional)"
-}
-````
-
-**Success Response (201 Created):**
-
-```json
-{
-  "user": {
-    "id": 1,
-    "username": "Olivia",
-    "email": "olivia.olivia@email.com",
-    "displayName": "Crusher",
-    "createdAt": "2025-09-08T12:00:00Z"
-  },
-  "token": "<jwt_token>"
+  "device_info": "string",
+  "location_info": "string"
 }
 ```
 
+**Success Response (201 Created):**  
+```json
+{
+  "id": "uuid",
+  "email": "alice@email.com",
+  "username": "Alice",
+  "created_at": "2025-09-08T12:00:00Z"
+}
+```
 
+---
 
-### Login User
+### Login User  
+**POST** `/api/auth/login`  
 
-**POST** /api/auth/login
+**Description:** Authenticates a user and returns a JWT.  
 
-**Description:** Authenticates a user with their email and password.
-
-**Payload:**
-
+**Payload:**  
 ```json
 {
   "email": "string",
@@ -47,58 +39,234 @@
 }
 ```
 
-**Success Response (200 OK):**
-
+**Success Response (200 OK):**  
 ```json
 {
-  "user_id": 1,
+  "id": "uuid",
   "token": "<jwt_token>",
   "refresh_token": "<refresh_token>",
   "expires_in": 3600
 }
 ```
 
+---
 
+### Get User Information  
+**GET** `/api/users/{id}`  
 
-### Get User Information
+**Headers:** `Authorization: Bearer <jwt>`  
 
-**GET** /api/users/{user_id}
+**Description:** Retrieves user details.  
 
-**Description:** Retrieves public information for a specific user.
-
-**Success Response (200 OK):**
-
+**Success Response (200 OK):**  
 ```json
 {
-  "id": 2,
-  "username": "Vlada",
-  "displayName": "vlad",
-  "createdAt": "2025-09-08T12:00:00Z"
+  "id": "uuid",
+  "email": "mark@email.com",
+  "username": "Mark",
+  "device_info": "Win11-PC",
+  "location_info": "MD",
+  "created_at": "2025-09-08T12:00:00Z",
+  "updated_at": "2025-09-09T12:00:00Z"
 }
 ```
 
+---
 
+### Update User Profile  
+**PATCH** `/api/users/{id}`  
 
-### Update User Profile
+**Headers:** `Authorization: Bearer <jwt>`  
 
-**POST** /api/users/{user_id}
-
-**Payload:**
-
+**Payload:**  
 ```json
 {
-  "displayName": "vlada",
-  "password": "greatpassword123"
+  "username": "newUsername",
+  "password": "newSecurePassword123",
+  "device_info": "MacBookPro",
+  "location_info": "US"
 }
 ```
 
-**Success Response (200 OK):**
-
+**Success Response (200 OK):**  
 ```json
-{ "ok": true }
+{
+  "id": "uuid",
+  "username": "newUsername",
+  "updated_at": "2025-09-09T12:30:00Z"
+}
 ```
 
+---
 
+### Delete User  
+**DELETE** `/api/users/{id}`  
+
+**Headers:** `Authorization: Bearer <jwt>`  
+
+**Description:** Deletes a user account.  
+
+**Success Response (200 OK):**  
+```json
+{ "message": "User deleted" }
+```
+
+---
+
+## Game Service
+
+### Create Lobby  
+**POST** `/api/games/lobbies`  
+
+**Description:** Creates a new lobby.  
+
+**Payload:**  
+```json
+{
+  "max_players": 10
+}
+```
+
+**Success Response (201 Created):**  
+```json
+{
+  "lobby_id": "uuid",
+  "max_players": 10,
+  "current_state": 0,
+  "created_at": "2025-09-08T12:00:00Z"
+}
+```
+
+---
+
+### Get Lobby Info  
+**GET** `/api/games/lobbies/{lobby_id}`  
+
+**Description:** Retrieves details about a specific lobby.  
+
+**Success Response (200 OK):**  
+```json
+{
+  "lobby_id": "uuid",
+  "max_players": 10,
+  "current_state": 1,
+  "created_at": "2025-09-08T12:00:00Z",
+  "closed_at": null,
+  "updated_at": "2025-09-08T12:30:00Z"
+}
+```
+
+---
+
+### Join Lobby  
+**POST** `/api/games/lobbies/{lobby_id}/join`  
+
+**Description:** Assigns a user to a lobby as a character.  
+
+**Payload:**  
+```json
+{
+  "user_id": "uuid",
+  "role_id": "uuid"
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "character_id": "uuid",
+  "lobby_id": "uuid",
+  "user_id": "uuid",
+  "role_id": "uuid",
+  "currency_amount": 100,
+  "vote_power": 1,
+  "created_at": "2025-09-08T12:05:00Z"
+}
+```
+
+---
+
+### Update Lobby State  
+**PATCH** `/api/games/lobbies/{lobby_id}/state`  
+
+**Payload:**  
+```json
+{
+  "new_state": 3
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "lobby_id": "uuid",
+  "current_state": 3,
+  "updated_at": "2025-09-08T12:15:00Z"
+}
+```
+
+---
+
+### Get Lobby Characters  
+**GET** `/api/games/lobbies/{lobby_id}/characters`  
+
+**Description:** Lists all characters in a lobby.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "character_id": "uuid",
+    "user_id": "uuid",
+    "role_id": "uuid",
+    "alive": true,
+    "vote_power": 1,
+    "currency_amount": 200
+  }
+]
+```
+
+---
+
+### Cast Vote  
+**POST** `/api/games/lobbies/{lobby_id}/vote`  
+
+**Payload:**  
+```json
+{
+  "voter_id": "uuid",
+  "target_id": "uuid"
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "tally": [
+    { "target_id": "uuid", "votes": 5 }
+  ]
+}
+```
+
+---
+
+### List Roles  
+**GET** `/api/games/roles`  
+
+**Description:** Returns all available roles.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "role_id": "uuid",
+    "name": "Mafia",
+    "initial_gold": 200,
+    "created_at": "2025-09-08T11:59:00Z",
+    "updated_at": "2025-09-08T11:59:00Z"
+  }
+]
+```
 
 ## Character Service
 
@@ -214,8 +382,7 @@
   "itemId": 1,
   "quantity": 1
 }
-
-
+```
 
 **Success Response (200 OK):**
 
@@ -490,6 +657,8 @@ This microservice is responsable for generating and distributing rumors based on
 ### Generate Rumors 
 
 **POST** api/rumors/generate
+
+**Request Body**
 
 **Request Body**
 
