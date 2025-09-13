@@ -27,11 +27,11 @@ For communication, we rely on **REST APIs, Events, and Message Queues**. REST is
 - **Why REST?** Buying and selling work naturally as HTTP requests.  
 - **Trade-off:** REST is slower than event-driven communication, but transactions don't crictically need real-time speed.  
 
-### Roleplay Service – JavaScript (Node.js) | REST API
+### Roleplay Service – C# (.NET Core) | REST API
 - **Responsibilities:** Resolves night actions like kills, heals, and investigations.  
-- **Why JavaScript?** Flexible and easy to adjust when game rules change.  
-- **Why REST?** Provides clarity and consistency when rezolving player actions.  
-- **Trade-off:** REST may feel slower, but what really matters here is keeping things fair and consistent. 
+- **Why C#?** C#’s strong typing and object-oriented approach make it a great fit for handling complex game logic and keeping the rules consistent. 
+- **Why REST?** Provides clarity and consistency when resolving player actions.  
+- **Trade-off:** REST might not be as fast as event-driven designs, but what really matters here is keeping the game fair and predictable for everyone.  
 
 ### Town Service – JavaScript (Node.js) | REST API + Events
 - **Responsibilities:** Manages locations, movements, and phase transitions.  
