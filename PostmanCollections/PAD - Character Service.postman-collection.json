@@ -1,0 +1,119 @@
+{
+  "info": {
+    "name": "Character Service API",
+    "_postman_id": "c2b4f3a0-0e20-47e5-9c2b-222222222222",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Endpoints for creating characters, updating them, and managing gold (roleId + userId support)."
+  },
+  "variable": [
+    { "key": "baseUrlChar", "value": "http://localhost:4002" },
+    { "key": "characterId", "value": "" },
+    { "key": "userId", "value": "1" },
+    { "key": "roleId", "value": "4" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET /health",
+          "request": { "method": "GET", "url": "{{baseUrlChar}}/health" },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Characters",
+      "item": [
+        {
+          "name": "Create character",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrlChar}}/api/characters",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": {{userId}},\n  \"name\": \"Selene\",\n  \"roleId\": {{roleId}}\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Created (201)', () => pm.response.to.have.status(201));",
+                  "const data = pm.response.json();",
+                  "if (data && (data._id || data.characterId)) { pm.collectionVariables.set('characterId', data._id || data.characterId); }",
+                  "pm.test('Has starting gold', () => pm.expect(data.gold).to.be.a('number'));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get character by id",
+          "request": { "method": "GET", "url": "{{baseUrlChar}}/api/characters/{{characterId}}" },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        },
+        {
+          "name": "Patch character (update level/gold)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrlChar}}/api/characters/{{characterId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"level\": 2,\n  \"gold\": 130\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Gold",
+      "item": [
+        {
+          "name": "Get balance",
+          "request": { "method": "GET", "url": "{{baseUrlChar}}/api/characters/{{characterId}}/balance" },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        },
+        {
+          "name": "Deduct gold (amount=50)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrlChar}}/api/characters/{{characterId}}/deduct-gold",
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 50\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
