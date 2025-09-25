@@ -1,0 +1,36 @@
+version: "3.8"
+
+services:
+  mongo:
+    image: mongo:6
+    container_name: mongo_container
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  user_service:
+    image: nadea39/user-management-service:1.0
+    container_name: user_service_container
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/user_management
+      - PORT=3000
+    depends_on:
+      - mongo
+  
+  db_userm_populator:
+    image: nadea39/user-management-service:1.0
+    container_name: db_populator_container
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/user_management
+    depends_on:
+      - mongo
+    command: ["node", "populate-db.js"]
+    restart: "no"
+
+volumes:
+  mongo_data:
