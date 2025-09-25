@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3.9"
 
 services:
   mongo:
@@ -32,5 +32,48 @@ services:
     command: ["node", "populate-db.js"]
     restart: "no"
 
+  # --- Your town & character stack ---
+  mongo-town:
+    image: mongo:6
+    container_name: mongo-town
+    restart: always
+    ports:
+      - "27019:27017"   # ⚠️ changed from 27017 to avoid port clash with "mongo"
+    volumes:
+      - mongo-town-data:/data/db
+
+  mongo-character:
+    image: mongo:6
+    container_name: mongo-character
+    restart: always
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-character-data:/data/db
+
+  townservice:
+    image: livia994/townservice:1.0
+    container_name: townservice
+    restart: always
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./TownService.env
+    depends_on:
+      - mongo-town
+
+  characterservice:
+    image: livia994/characterservice:1.0
+    container_name: characterservice
+    restart: always
+    ports:
+      - "4002:4002"
+    env_file:
+      - ./CharacterService.env
+    depends_on:
+      - mongo-character
+
 volumes:
   mongo_data:
+  mongo-town-data:
+  mongo-character-data:
