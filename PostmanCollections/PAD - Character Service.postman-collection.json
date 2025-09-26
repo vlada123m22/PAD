@@ -1,36 +1,32 @@
 {
   "info": {
-    "name": "Character Service API by UserId",
-    "_postman_id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
+    "name": "Character Service API (Predefined DB)",
+    "_postman_id": "c1d2e3f4-5678-90ab-cdef-1234567890ab",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Postman collection for Character Service using userId instead of Mongo _id."
+    "description": "Postman collection for Character Service using userId (no creation endpoint, characters are seeded)."
   },
   "variable": [
     { "key": "baseUrlChar", "value": "http://localhost:4002" },
-    { "key": "userId", "value": "1" },
-    { "key": "roleId", "value": "4" }
+    { "key": "userId", "value": "1" }
   ],
   "item": [
     {
       "name": "Characters",
       "item": [
         {
-          "name": "Create character",
+          "name": "Get all characters",
           "request": {
-            "method": "POST",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{baseUrlChar}}/api/characters",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"userId\": {{userId}},\n  \"name\": \"Selene\",\n  \"roleId\": {{roleId}}\n}"
-            }
+            "method": "GET",
+            "url": "{{baseUrlChar}}/api/characters"
           },
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Created (201)', () => pm.response.to.have.status(201));"
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "pm.test('Response is an array', () => Array.isArray(data));"
                 ]
               }
             }
@@ -63,15 +59,16 @@
             "method": "PATCH",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "url": "{{baseUrlChar}}/api/characters/user/{{userId}}",
-            "body": { "mode": "raw", "raw": "{\n  \"level\": 2,\n  \"alive\": false\n}" }
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"level\": 2,\n  \"alive\": false\n}"
+            }
           },
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
-                ]
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
               }
             }
           ]
@@ -86,9 +83,7 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
-                ]
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
               }
             }
           ]
@@ -99,15 +94,16 @@
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "url": "{{baseUrlChar}}/api/characters/user/{{userId}}/deduct-gold",
-            "body": { "mode": "raw", "raw": "{\n  \"amount\": 50\n}" }
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 50\n}"
+            }
           },
           "event": [
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
-                ]
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
               }
             }
           ]
@@ -122,9 +118,7 @@
             {
               "listen": "test",
               "script": {
-                "exec": [
-                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
-                ]
+                "exec": ["pm.test('Status 204', () => pm.response.to.have.status(204));"]
               }
             }
           ]
