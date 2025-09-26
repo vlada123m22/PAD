@@ -1,5 +1,5 @@
 services:
-  # === User Management Service ===
+
   mongo:
     image: mongo:6
     container_name: mongo_container
@@ -31,7 +31,7 @@ services:
     command: ["node", "populate-db.js"]
     restart: "no"
 
-  # === Town Service ===
+  
   mongo-town:
     image: mongo:6
     container_name: mongo-town
@@ -42,7 +42,7 @@ services:
       - mongo-town-data:/data/db
 
   townservice:
-    image: livia994/townservice:1.0   # <-- your public DockerHub image
+    image: livia994/townservice:1.0   
     container_name: townservice
     restart: always
     ports:
@@ -60,10 +60,10 @@ services:
       - MONGO_URI=mongodb://mongo-town:27017/townDB
     depends_on:
       - mongo-town
-    command: ["node", "src/db/seed/town-seed.js"]
+    command: ["node", "PopulationScripts/TownServicePopulator.js"]
     restart: "no"
 
-  # === Character Service ===
+
   mongo-character:
     image: mongo:6
     container_name: mongo-character
@@ -92,7 +92,7 @@ services:
       - MONGO_URI=mongodb://mongo-character:27017/characterDB
     depends_on:
       - mongo-character
-    command: ["node", "src/db/seed/character-seed.js"]
+    command: ["node", "PopulationScripts/CharacterServicePopulator.js"]
     restart: "no"
 
 volumes:
