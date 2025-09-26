@@ -1,32 +1,16 @@
 {
   "info": {
-    "name": "Character Service API",
-    "_postman_id": "c2b4f3a0-0e20-47e5-9c2b-222222222222",
+    "name": "Character Service API by UserId",
+    "_postman_id": "a1b2c3d4-5678-90ab-cdef-1234567890ab",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "description": "Endpoints for creating characters, updating them, and managing gold (roleId + userId support)."
+    "description": "Postman collection for Character Service using userId instead of Mongo _id."
   },
   "variable": [
     { "key": "baseUrlChar", "value": "http://localhost:4002" },
-    { "key": "characterId", "value": "" },
     { "key": "userId", "value": "1" },
     { "key": "roleId", "value": "4" }
   ],
   "item": [
-    {
-      "name": "Health",
-      "item": [
-        {
-          "name": "GET /health",
-          "request": { "method": "GET", "url": "{{baseUrlChar}}/health" },
-          "event": [
-            {
-              "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
-            }
-          ]
-        }
-      ]
-    },
     {
       "name": "Characters",
       "item": [
@@ -46,70 +30,102 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test('Created (201)', () => pm.response.to.have.status(201));",
-                  "const data = pm.response.json();",
-                  "if (data && (data._id || data.characterId)) { pm.collectionVariables.set('characterId', data._id || data.characterId); }",
-                  "pm.test('Has starting gold', () => pm.expect(data.gold).to.be.a('number'));"
+                  "pm.test('Created (201)', () => pm.response.to.have.status(201));"
                 ]
               }
             }
           ]
         },
         {
-          "name": "Get character by id",
-          "request": { "method": "GET", "url": "{{baseUrlChar}}/api/characters/{{characterId}}" },
-          "event": [
-            {
-              "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
-            }
-          ]
-        },
-        {
-          "name": "Patch character (update level/gold)",
+          "name": "Get characters by userId",
           "request": {
-            "method": "PATCH",
-            "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{baseUrlChar}}/api/characters/{{characterId}}",
-            "body": {
-              "mode": "raw",
-              "raw": "{\n  \"level\": 2,\n  \"gold\": 130\n}"
-            }
+            "method": "GET",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}"
           },
           "event": [
             {
               "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Gold",
-      "item": [
-        {
-          "name": "Get balance",
-          "request": { "method": "GET", "url": "{{baseUrlChar}}/api/characters/{{characterId}}/balance" },
-          "event": [
-            {
-              "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "pm.test('All characters belong to userId', () => {",
+                  "  data.forEach(c => pm.expect(c.userId).to.eql(parseInt(pm.variables.get('userId'))));",
+                  "});"
+                ]
+              }
             }
           ]
         },
         {
-          "name": "Deduct gold (amount=50)",
+          "name": "Patch characters by userId",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}",
+            "body": { "mode": "raw", "raw": "{\n  \"level\": 2,\n  \"alive\": false\n}" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get balance by userId",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}/balance"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deduct gold by userId",
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "url": "{{baseUrlChar}}/api/characters/{{characterId}}/deduct-gold",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}/deduct-gold",
             "body": { "mode": "raw", "raw": "{\n  \"amount\": 50\n}" }
           },
           "event": [
             {
               "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete characters by userId",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 204', () => pm.response.to.have.status(204));"
+                ]
+              }
             }
           ]
         }
