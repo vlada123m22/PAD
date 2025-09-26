@@ -6,7 +6,7 @@
     "description": "Endpoints for listing locations, moving characters, and checking occupants (with lobby support)."
   },
   "variable": [
-    { "key": "baseUrlTown", "value": "http://localhost:3001" },
+    { "key": "baseUrlTown", "value": "http://localhost:4001" },
     { "key": "lobbyId", "value": "2001" },
     { "key": "locationId", "value": "1" },
     { "key": "characterId", "value": "101" },

@@ -1,6 +1,5 @@
-version: "3.9"
-
 services:
+  # === User Management Service ===
   mongo:
     image: mongo:6
     container_name: mongo_container
@@ -21,7 +20,7 @@ services:
       - PORT=3000
     depends_on:
       - mongo
-  
+
   db_userm_populator:
     image: nadea39/user-management-service:1.0
     container_name: db_populator_container
@@ -32,16 +31,39 @@ services:
     command: ["node", "populate-db.js"]
     restart: "no"
 
-  # --- Your town & character stack ---
+  # === Town Service ===
   mongo-town:
     image: mongo:6
     container_name: mongo-town
     restart: always
     ports:
-      - "27019:27017"   # ⚠️ changed from 27017 to avoid port clash with "mongo"
+      - "27019:27017"  
     volumes:
       - mongo-town-data:/data/db
 
+  townservice:
+    image: livia994/townservice:1.0   # <-- your public DockerHub image
+    container_name: townservice
+    restart: always
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./TownService.env
+    depends_on:
+      - mongo-town
+      - db_town_populator
+
+  db_town_populator:
+    image: livia994/townservice:1.0   
+    container_name: town_db_populator
+    environment:
+      - MONGO_URI=mongodb://mongo-town:27017/townDB
+    depends_on:
+      - mongo-town
+    command: ["node", "src/db/seed/town-seed.js"]
+    restart: "no"
+
+  # === Character Service ===
   mongo-character:
     image: mongo:6
     container_name: mongo-character
@@ -51,19 +73,8 @@ services:
     volumes:
       - mongo-character-data:/data/db
 
-  townservice:
-    image: livia994/townservice:1.0
-    container_name: townservice
-    restart: always
-    ports:
-      - "4001:4001"
-    env_file:
-      - ./TownService.env
-    depends_on:
-      - mongo-town
-
   characterservice:
-    image: livia994/characterservice:1.0
+    image: livia994/characterservice:1.1   
     container_name: characterservice
     restart: always
     ports:
@@ -72,6 +83,17 @@ services:
       - ./CharacterService.env
     depends_on:
       - mongo-character
+      - db_character_populator
+
+  db_character_populator:
+    image: livia994/characterservice:1.1   
+    container_name: character_db_populator
+    environment:
+      - MONGO_URI=mongodb://mongo-character:27017/characterDB
+    depends_on:
+      - mongo-character
+    command: ["node", "src/db/seed/character-seed.js"]
+    restart: "no"
 
 volumes:
   mongo_data:
