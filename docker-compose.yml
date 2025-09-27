@@ -1,26 +1,43 @@
 services:
-
   mongo:
     image: mongo:6
     container_name: mongo_container
-    restart: always
-    ports:
-      - "27017:27017"
+    restart: unless-stopped
     volumes:
       - mongo_data:/data/db
+    networks:
+      - game-network
 
   user_service:
-    image: nadea39/user-management-service:1.0
+    image: nadea39/user-management-service:1.4
     container_name: user_service_container
-    restart: always
+    environment:
+      - MONGO_URI=${MONGO_URI_USER}
+      - USE_MOCKS=true
+      - PORT=3000 
     ports:
       - "3000:3000"
-    environment:
-      - MONGO_URI=mongodb://mongo:27017/user_management
-      - PORT=3000
     depends_on:
       - mongo
+    networks:
+      - game-network
+    env_file:
+      - .env
 
+  game_service:
+    image: nadea39/gameservice:v1.0.2
+    container_name: gameservice_container
+    environment:
+      - MONGO_URI=${MONGO_URI_GAME}
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+    ports:
+      - "3005:3005"
+    depends_on:
+      - mongo
+    networks:
+      - game-network
+  
   db_userm_populator:
     image: nadea39/user-management-service:1.0
     container_name: db_populator_container
@@ -28,10 +45,22 @@ services:
       - MONGO_URI=mongodb://mongo:27017/user_management
     depends_on:
       - mongo
-    command: ["node", "populate-db.js"]
+    command: ["node", "src/populate-db.js"]
     restart: "no"
 
-  
+  db_game_populator:
+    image: nadea39/gameservice:v1.0.2
+    container_name: game_db_populator
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/gameservice
+    depends_on:
+      - mongo
+    command: ["node", "src/gameServicePopulator.js"]
+    restart: "no"
+    networks:
+      - game-network
+
+  # --- all the extra services from main branch ---
   mongo-town:
     image: mongo:6
     container_name: mongo-town
@@ -62,7 +91,6 @@ services:
       - mongo-town
     command: ["node", "PopulationScripts/TownServicePopulator.js"]
     restart: "no"
-
 
   mongo-character:
     image: mongo:6
@@ -106,7 +134,7 @@ services:
     volumes:
       - postgres-voting:/data/postgres
     ports:
-      - "5442:5432"  # host port 5432 → container 5432
+      - "5442:5432"
     networks:
       - postgres-net
     restart: unless-stopped
@@ -127,7 +155,7 @@ services:
     volumes:
       - postgres-task:/data/postgres
     ports:
-      - "5443:5432"  # host port 5433 → container 5432
+      - "5443:5432"
     networks:
       - postgres-net
     restart: unless-stopped
