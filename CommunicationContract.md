@@ -117,6 +117,8 @@
 
 ## Game Service
 
+## Lobbies
+
 ### Create Lobby  
 **POST** `/api/games/lobbies`  
 
@@ -137,6 +139,26 @@
   "current_state": 0,
   "created_at": "2025-09-08T12:00:00Z"
 }
+```
+
+---
+
+### List Available Lobbies  
+**GET** `/api/games/lobbies?state=open`  
+
+**Description:** Lists all available (non-started) lobbies that users can join.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "lobby_id": "uuid",
+    "max_players": 10,
+    "current_players": 4,
+    "current_state": 0,
+    "created_at": "2025-09-08T12:00:00Z"
+  }
+]
 ```
 
 ---
@@ -163,13 +185,12 @@
 ### Join Lobby  
 **POST** `/api/games/lobbies/{lobby_id}/join`  
 
-**Description:** Assigns a user to a lobby as a character.  
+**Description:** Assigns a user to a lobby. Roles are assigned automatically when the game starts.  
 
 **Payload:**  
 ```json
 {
-  "user_id": "uuid",
-  "role_id": "uuid"
+  "user_id": "uuid"
 }
 ```
 
@@ -252,20 +273,64 @@
 
 ---
 
-### List Roles  
-**GET** `/api/games/roles`  
+## Announcements (from Roleplaying Service)
 
-**Description:** Returns all available roles.  
+### Receive Announcement (internal)  
+**POST** `/api/games/lobbies/{lobby_id}/announcements`  
+
+**Description:** Called by the Roleplaying Service to deliver an announcement.  
+
+**Payload:**  
+```json
+{
+  "announcement_id": "uuid",
+  "message": "The night phase has begun.",
+  "created_at": "2025-09-08T12:20:00Z"
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "status": "received"
+}
+```
+
+---
+
+### Get Announcements  
+**GET** `/api/games/lobbies/{lobby_id}/announcements`  
+
+**Description:** Retrieves all announcements for a given lobby.  
 
 **Success Response (200 OK):**  
 ```json
 [
   {
-    "role_id": "uuid",
-    "name": "Mafia",
-    "initial_gold": 200,
-    "created_at": "2025-09-08T11:59:00Z",
-    "updated_at": "2025-09-08T11:59:00Z"
+    "announcement_id": "uuid",
+    "message": "The night phase has begun.",
+    "created_at": "2025-09-08T12:20:00Z"
+  }
+]
+```
+
+---
+
+## Tasks (from Task Service)
+
+### Get User Tasks  
+**GET** `/api/games/lobbies/{lobby_id}/tasks?user_id={user_id}`  
+
+**Description:** Retrieves all tasks assigned to a user within a specific lobby.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "task_id": "uuid",
+    "description": "Investigate another player tonight.",
+    "assigned_to": "user_id",
+    "created_at": "2025-09-08T12:25:00Z"
   }
 ]
 ```
