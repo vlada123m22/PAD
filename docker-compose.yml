@@ -74,7 +74,7 @@ services:
       - mongo-character-data:/data/db
 
   characterservice:
-    image: livia994/characterservice:1.1   
+    image: livia994/characterservice:1.3
     container_name: characterservice
     restart: always
     ports:
@@ -86,7 +86,7 @@ services:
       - db_character_populator
 
   db_character_populator:
-    image: livia994/characterservice:1.1   
+    image: livia994/characterservice:1.3
     container_name: character_db_populator
     environment:
       - MONGO_URI=mongodb://mongo-character:27017/characterDB
