@@ -55,11 +55,11 @@ other test endpoints available in PostmanCollections
 ```bash
 # User Service
 docker cp scripts/populate-user-db.js user_service_container:/usr/src/app/
-docker exec -it user_service_container node populate-user-db.js
+docker exec -it user_service_container node UserManagementPopulator.js
 
 # Game Service  
 docker cp scripts/populate-game-db.js game_service_container:/usr/src/app/
-docker exec -it game_service_container node populate-game-db.js
+docker exec -it game_service_container node GameServicePopulator.js
 ```
 
 ### Testing
