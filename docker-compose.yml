@@ -47,8 +47,8 @@ services:
     restart: always
     ports:
       - "4001:4001"
-    #env_file:
-     # - ./TownService.env
+    env_file:
+      - ./TownService.env
     depends_on:
       - mongo-town
       - db_town_populator
@@ -79,8 +79,8 @@ services:
     restart: always
     ports:
       - "4002:4002"
-    #env_file:
-      #- ./CharacterService.env
+    env_file:
+      - ./CharacterService.env
     depends_on:
       - mongo-character
       - db_character_populator
