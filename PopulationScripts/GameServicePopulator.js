@@ -48,9 +48,9 @@ async function seedCharacters() {
         roles.forEach((role) => {
           characters.push({
             character_id: uuidv4(),
-            lobby_id: lobby.lobby_id,
-            user_id: uuidv4(), // dummy user
-            role_id: role.role_id
+            lobby_id: lobby._id.toString(),  // Changed this
+            user_id: uuidv4(),
+            role_id: role._id.toString()     // And this
           });
         });
       });
@@ -63,7 +63,7 @@ async function seedCharacters() {
 
 async function main() {
   try {
-    await mongoose.connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    await mongoose.connect(MONGO_URI);
     console.log("Connected to MongoDB.");
 
     await seedRoles();
