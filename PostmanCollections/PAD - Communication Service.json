@@ -1,0 +1,198 @@
+{
+	"info": {
+		"_postman_id": "998ee404-367a-4dc3-8cd3-3e168a22e363",
+		"name": "Communication Service",
+		"description": "REST and WebSocket requests for Communication Service. Global chat (voting) and Mafia chat (night).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39118549"
+	},
+	"item": [
+		{
+			"name": "REST API",
+			"item": [
+				{
+					"name": "Send Global Chat Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"senderId\": 1,\n  \"lobbyId\": \"124\",\n  \"channelType\": \"global\",\n  \"message\": \"Vote for Player 5!\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/chat/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"chat",
+								"send"
+							]
+						},
+						"description": "Send a message to global chat. Allowed only during Voting phase."
+					},
+					"response": []
+				},
+				{
+					"name": "Send Mafia Chat Message",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"senderId\": 2,\n  \"lobbyId\": \"124\",\n  \"channelType\": \"mafia\",\n  \"message\": \"Coordinate tonight's action.\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/chat/send",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"chat",
+								"send"
+							]
+						},
+						"description": "Send a message to Mafia private chat. Allowed only at Night phase and sender must be a mafia member."
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Messages",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/chat/messages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"chat",
+								"messages"
+							]
+						},
+						"description": "Get all messages (global + mafia) stored in the service."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Messages by Lobby",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/chat/messages/lobby/124",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"chat",
+								"messages",
+								"lobby",
+								"124"
+							]
+						},
+						"description": "Get all messages for a specific lobby."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Message",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/chat/messages/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"chat",
+								"messages",
+								"1"
+							]
+						},
+						"description": "Delete a message by ID."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "WebSocket API",
+			"item": [
+				{
+					"name": "WS: Global Chat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "ws://localhost:8080/ws/chat/global/124",
+							"protocol": "ws",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ws",
+								"chat",
+								"global",
+								"124"
+							]
+						},
+						"description": "Subscribe to global chat via WebSocket. Only during Voting phase."
+					},
+					"response": []
+				},
+				{
+					"name": "WS: Mafia Chat",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "ws://localhost:8080/ws/chat/mafia/124",
+							"protocol": "ws",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"ws",
+								"chat",
+								"mafia",
+								"124"
+							]
+						},
+						"description": "Subscribe to Mafia chat via WebSocket. Only during Night phase for mafia members."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

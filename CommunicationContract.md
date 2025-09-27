@@ -1,3 +1,5 @@
+## User Management Service
+
 ### Register User  
 **POST** `/api/users`  
 

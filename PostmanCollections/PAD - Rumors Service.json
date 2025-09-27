@@ -1,0 +1,152 @@
+{
+	"info": {
+		"_postman_id": "aee117d3-1d64-4be4-b617-dbf11d111206",
+		"name": "Rumors Service",
+		"description": "Postman collection for RumorsService (generate rumors based on roles, inventory, and locations). Service default: {{baseUrl}}",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39118549"
+	},
+	"item": [
+		{
+			"name": "Rumors API",
+			"item": [
+				{
+					"name": "Generate Rumors (with workLogs)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lobbyId\": \"124\",\n  \"phase\": \"Afternoon\",\n  \"workLogs\": [\n    { \"characterId\": 1, \"location\": \"Hospital\" },\n    { \"characterId\": 2, \"location\": \"Hospital\" },\n    { \"characterId\": 3, \"location\": \"Hospital\" },\n    { \"characterId\": 7, \"location\": \"Marketplace\" },\n    { \"characterId\": 9, \"location\": \"Hospital\" },\n    { \"characterId\": 10, \"location\": \"Marketplace\" }\n  ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/rumors/generate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rumors",
+								"generate"
+							]
+						},
+						"description": "Generate rumors using provided workLogs (no external calls). Use this to test rumor generation logic locally."
+					},
+					"response": []
+				},
+				{
+					"name": "Generate Rumors (lobbyId only)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lobbyId\": \"124\",\n  \"phase\": \"Afternoon\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/rumors/generate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rumors",
+								"generate"
+							]
+						},
+						"description": "Generate rumors by only providing lobbyId. RumorsService will call the Location Service to obtain workLogs (requires Location Service running)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Rumors for Character",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/rumors/{{characterId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rumors",
+								"{{characterId}}"
+							],
+							"variable": [
+								{
+									"key": "characterId",
+									"value": "1",
+									"description": "Character ID to fetch rumors for"
+								}
+							]
+						},
+						"description": "Get all rumors addressed to a specific character. Set environment variable `characterId` before running."
+					},
+					"response": []
+				},
+				{
+					"name": "List All Rumors",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/rumors",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"rumors"
+							]
+						},
+						"description": "List all rumors stored (useful for debugging)."
+					},
+					"response": []
+				},
+				{
+					"name": "Mock Location Service (example response)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{locationServiceUrl}}/api/locations/124/worklogs",
+							"host": [
+								"{{locationServiceUrl}}"
+							],
+							"path": [
+								"api",
+								"locations",
+								"124",
+								"worklogs"
+							]
+						},
+						"description": "Example URL and response body you can configure if you run a mock Location Service. Not required if Location Service is real."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// No pre-request scripts"
+				]
+			}
+		}
+	]
+}
