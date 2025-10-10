@@ -1,45 +1,39 @@
 ## User Management Service
 
 ### Register User  
-**POST** /api/auth/register
+**POST** `/api/users`  
 
-**Description:** Creates a new user account and returns a JWT.  
+**Description:** Creates a new user account.  
 
 **Payload:**  
 ```json
 {
-  "username": "string",
   "email": "string",
+  "username": "string",
   "password": "string",
-  "displayName": "string (optional)"
-}
-````
-
-**Success Response (201 Created):**
-
-```json
-{
-  "user": {
-    "id": 1,
-    "username": "Olivia",
-    "email": "olivia.olivia@email.com",
-    "displayName": "Crusher",
-    "createdAt": "2025-09-08T12:00:00Z"
-  },
-  "token": "<jwt_token>"
+  "device_info": "string",
+  "location_info": "string"
 }
 ```
 
+**Success Response (201 Created):**  
+```json
+{
+  "id": "uuid",
+  "email": "alice@email.com",
+  "username": "Alice",
+  "created_at": "2025-09-08T12:00:00Z"
+}
+```
 
+---
 
-### Login User
+### Login User  
+**POST** `/api/auth/login`  
 
-**POST** /api/auth/login
+**Description:** Authenticates a user and returns a JWT.  
 
-**Description:** Authenticates a user with their email and password.
-
-**Payload:**
-
+**Payload:**  
 ```json
 {
   "email": "string",
@@ -47,58 +41,299 @@
 }
 ```
 
-**Success Response (200 OK):**
-
+**Success Response (200 OK):**  
 ```json
 {
-  "user_id": 1,
+  "id": "uuid",
   "token": "<jwt_token>",
   "refresh_token": "<refresh_token>",
   "expires_in": 3600
 }
 ```
 
+---
 
+### Get User Information  
+**GET** `/api/users/{id}`  
 
-### Get User Information
+**Headers:** `Authorization: Bearer <jwt>`  
 
-**GET** /api/users/{user_id}
+**Description:** Retrieves user details.  
 
-**Description:** Retrieves public information for a specific user.
-
-**Success Response (200 OK):**
-
+**Success Response (200 OK):**  
 ```json
 {
-  "id": 2,
-  "username": "Vlada",
-  "displayName": "vlad",
-  "createdAt": "2025-09-08T12:00:00Z"
+  "id": "uuid",
+  "email": "mark@email.com",
+  "username": "Mark",
+  "device_info": "Win11-PC",
+  "location_info": "MD",
+  "created_at": "2025-09-08T12:00:00Z",
+  "updated_at": "2025-09-09T12:00:00Z"
 }
 ```
 
+---
 
+### Update User Profile  
+**PATCH** `/api/users/{id}`  
 
-### Update User Profile
+**Headers:** `Authorization: Bearer <jwt>`  
 
-**POST** /api/users/{user_id}
-
-**Payload:**
-
+**Payload:**  
 ```json
 {
-  "displayName": "vlada",
-  "password": "greatpassword123"
+  "username": "newUsername",
+  "password": "newSecurePassword123",
+  "device_info": "MacBookPro",
+  "location_info": "US"
 }
 ```
 
-**Success Response (200 OK):**
-
+**Success Response (200 OK):**  
 ```json
-{ "ok": true }
+{
+  "id": "uuid",
+  "username": "newUsername",
+  "updated_at": "2025-09-09T12:30:00Z"
+}
 ```
 
+---
 
+### Delete User  
+**DELETE** `/api/users/{id}`  
+
+**Headers:** `Authorization: Bearer <jwt>`  
+
+**Description:** Deletes a user account.  
+
+**Success Response (200 OK):**  
+```json
+{ "message": "User deleted" }
+```
+
+---
+
+## Game Service
+
+## Lobbies
+
+### Create Lobby  
+**POST** `/api/games/lobbies`  
+
+**Description:** Creates a new lobby.  
+
+**Payload:**  
+```json
+{
+  "max_players": 10
+}
+```
+
+**Success Response (201 Created):**  
+```json
+{
+  "lobby_id": "uuid",
+  "max_players": 10,
+  "current_state": 0,
+  "created_at": "2025-09-08T12:00:00Z"
+}
+```
+
+---
+
+### List Available Lobbies  
+**GET** `/api/games/lobbies?state=open`  
+
+**Description:** Lists all available (non-started) lobbies that users can join.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "lobby_id": "uuid",
+    "max_players": 10,
+    "current_players": 4,
+    "current_state": 0,
+    "created_at": "2025-09-08T12:00:00Z"
+  }
+]
+```
+
+---
+
+### Get Lobby Info  
+**GET** `/api/games/lobbies/{lobby_id}`  
+
+**Description:** Retrieves details about a specific lobby.  
+
+**Success Response (200 OK):**  
+```json
+{
+  "lobby_id": "uuid",
+  "max_players": 10,
+  "current_state": 1,
+  "created_at": "2025-09-08T12:00:00Z",
+  "closed_at": null,
+  "updated_at": "2025-09-08T12:30:00Z"
+}
+```
+
+---
+
+### Join Lobby  
+**POST** `/api/games/lobbies/{lobby_id}/join`  
+
+**Description:** Assigns a user to a lobby. Roles are assigned automatically when the game starts.  
+
+**Payload:**  
+```json
+{
+  "user_id": "uuid"
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "character_id": "uuid",
+  "lobby_id": "uuid",
+  "user_id": "uuid",
+  "role_id": "uuid",
+  "currency_amount": 100,
+  "vote_power": 1,
+  "created_at": "2025-09-08T12:05:00Z"
+}
+```
+
+---
+
+### Update Lobby State  
+**PATCH** `/api/games/lobbies/{lobby_id}/state`  
+
+**Payload:**  
+```json
+{
+  "new_state": 3
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "lobby_id": "uuid",
+  "current_state": 3,
+  "updated_at": "2025-09-08T12:15:00Z"
+}
+```
+
+---
+
+### Get Lobby Characters  
+**GET** `/api/games/lobbies/{lobby_id}/characters`  
+
+**Description:** Lists all characters in a lobby.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "character_id": "uuid",
+    "user_id": "uuid",
+    "role_id": "uuid",
+    "alive": true,
+    "vote_power": 1,
+    "currency_amount": 200
+  }
+]
+```
+
+---
+
+### Cast Vote  
+**POST** `/api/games/lobbies/{lobby_id}/vote`  
+
+**Payload:**  
+```json
+{
+  "voter_id": "uuid",
+  "target_id": "uuid"
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "tally": [
+    { "target_id": "uuid", "votes": 5 }
+  ]
+}
+```
+
+---
+
+## Announcements (from Roleplaying Service)
+
+### Receive Announcement (internal)  
+**POST** `/api/games/lobbies/{lobby_id}/announcements`  
+
+**Description:** Called by the Roleplaying Service to deliver an announcement.  
+
+**Payload:**  
+```json
+{
+  "announcement_id": "uuid",
+  "message": "The night phase has begun.",
+  "created_at": "2025-09-08T12:20:00Z"
+}
+```
+
+**Success Response (200 OK):**  
+```json
+{
+  "status": "received"
+}
+```
+
+---
+
+### Get Announcements  
+**GET** `/api/games/lobbies/{lobby_id}/announcements`  
+
+**Description:** Retrieves all announcements for a given lobby.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "announcement_id": "uuid",
+    "message": "The night phase has begun.",
+    "created_at": "2025-09-08T12:20:00Z"
+  }
+]
+```
+
+---
+
+## Tasks (from Task Service)
+
+### Get User Tasks  
+**GET** `/api/games/lobbies/{lobby_id}/tasks?user_id={user_id}`  
+
+**Description:** Retrieves all tasks assigned to a user within a specific lobby.  
+
+**Success Response (200 OK):**  
+```json
+[
+  {
+    "task_id": "uuid",
+    "description": "Investigate another player tonight.",
+    "assigned_to": "user_id",
+    "created_at": "2025-09-08T12:25:00Z"
+  }
+]
+```
 
 ## Character Service
 
@@ -483,116 +718,124 @@
 
 ##  Rumors Service
 
-**Purpose:** Generates and distributes rumors based on players role and location. Rumors are not purchased — they are produced by the system when players share location/tasks.
+This microservice is responsable for generating and distributing rumors based on players role and location. Rumors are not purchased, but they are produced by the system when players share location/tasks and sent to random users after the working ends. How many people will get rumours depends on the dumber of players that share a location/tasks.
 
-### Generate Rumors for Location (internal / called by Task Service or Town Service)
 
-**POST** /api/rumors/generate
-  
+### Generate Rumors 
 
-**Payload:**
-```json
-{
-  "lobbyId": 2001,
-  "locationId": 2
-}
-```
+**POST** api/rumors/generate
 
-**Success Response (200 OK):**
+**Request Body**
+
+**Request Body**
 
 ```json
 {
-  "locationId": 2,
-  "generatedRumors": [
-    { "recipientCharacterId": 101, "rumorText": "Someone was seen lurking around Warehouse." }
-  ]
+  "lobbyId": "124",
+  "workLogs": [
+    { "characterId": 1, "location": "Hospital" },
+    { "characterId": 2, "location": "Hospital" },
+    { "characterId": 3, "location": "Hospital" },
+    { "characterId": 7, "location": "Marketplace" },
+    { "characterId": 9, "location": "Hospital" },
+    { "characterId": 10, "location": "Marketplace" }
+  ],
+  "phase": "Afternoon"
 }
 ```
 
-
-### Get Rumors For Character
-
-**GET** /api/rumors/characters/{characterId}
-
-**Description:** Returns rumors that were delivered to the character (for UI). Rumors expire after the day/session and are not persisted permanently beyond the lobby.
-
-**Response (200 OK):**
+**Response Example**
 
 ```json
 [
-  { "rumorId": 411, "text": "Someone was seen walking around Town Square.", "sourceLocationId": 1 }
+  {
+    "recipientCharacterId": 1,
+    "rumorText": "Someone was seen lurking around the Hospital.",
+    "origin": "system"
+  },
+  {
+    "recipientCharacterId": 9,
+    "rumorText": "The Doctor was seen around the Hospital.",
+    "origin": "system"
+  }
 ]
 ```
+
+
+### Get Rumors for Character
+
+**GET** /rumors/{characterId}
+
+**Response Example**
+
+```json
+[
+  {
+    "rumorId": 111,
+    "rumorText": "The Mayor was seen around the Marketplace.",
+    "origin": "system",
+    "timestamp": "2025-09-11T20:10:00Z"
+  }
+]
+```
+
 
 
 
 ##  Communication Service
 
-### Send Message (Private)
+This microservice is reponsible for communication between the players. A global chat for all the players during the voting and a private chat for Mafias during the night.
 
-**POST** /api/chat/private
+##  Communication Contract
 
-**Payload:**
+### Send Message (Global or Location chat)
+
+**POST** /api/chat/send
+
+**Request Body**
 
 ```json
 {
   "senderId": 1,
-  "receiverId": 12,
-  "message": "Meet me at the Back Alley."
+  "channelType": "global",
+  "message": "I think the Doctor is suspicious!"
 }
 ```
 
-**Response (201 Created):**
+**Response Example**
 
 ```json
 {
-  "messageId": 881,
-  "status": "sent"
+  "status": "sent",
+  "channelType": "global",
+  "timestamp": "2025-09-11T19:42:00Z"
 }
 ```
 
 
 
-### Send Global Message (Voting Only)
+### WebSockets
 
-**POST** /api/chat/global
+### Global Chat
 
-**Payload:**
+**WS** `/ws/chat/global/{lobbyId}`
+
+Message format:
 
 ```json
 {
-  "lobbyId": 131,
-  "senderId": 8,
-  "message": "I think Catalina is Vampire, I can feel she wants to suck dry my blood"
-}
-```
-
-**Response (201 Created):**
-
-```json
-{
-  "messageId": 8002,
-  "status": "sent"
+  "fromCharacterId": 7,
+  "text": "Vote for the Vampire!",
+  "timestamp": "2025-09-11T19:43:00Z"
 }
 ```
 
 
+### Mafia Private Chat
 
-### Get Messages in Room
+**WS** `/ws/chat/mafia/{lobbyId}`
 
-**GET** /api/chat/rooms/{locationId}
-
-**Response (200 OK):**
-
-```json
-[
-  {
-    "messageId": 8003,
-    "senderId": 2,
-    "message": "The Doctor was acting suspicious earlier."
-  }
-]
-```
+Accessible only to Mafia members.
 
 
 

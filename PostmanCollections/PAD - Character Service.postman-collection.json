@@ -1,0 +1,129 @@
+{
+  "info": {
+    "name": "Character Service API (Predefined DB)",
+    "_postman_id": "c1d2e3f4-5678-90ab-cdef-1234567890ab",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection for Character Service using userId (no creation endpoint, characters are seeded)."
+  },
+  "variable": [
+    { "key": "baseUrlChar", "value": "http://localhost:4002" },
+    { "key": "userId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Characters",
+      "item": [
+        {
+          "name": "Get all characters",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlChar}}/api/characters"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "pm.test('Response is an array', () => Array.isArray(data));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get characters by userId",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const data = pm.response.json();",
+                  "pm.test('All characters belong to userId', () => {",
+                  "  data.forEach(c => pm.expect(c.userId).to.eql(parseInt(pm.variables.get('userId'))));",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Patch characters by userId",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"level\": 2,\n  \"alive\": false\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get balance by userId",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}/balance"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Deduct gold by userId",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}/deduct-gold",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 50\n}"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete characters by userId",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrlChar}}/api/characters/user/{{userId}}"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 204', () => pm.response.to.have.status(204));"]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

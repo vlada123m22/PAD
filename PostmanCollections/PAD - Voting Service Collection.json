@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "ede0bb53-e4b6-41cc-9fba-caa936a1febd",
+		"name": "New Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29917238"
+	},
+	"item": [
+		{
+			"name": "New Request",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/voting/results/202",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"voting",
+						"results",
+						"202"
+					]
+				}
+			},
+			"response": {
+				"lobbyID": 202,
+				"results": [
+					{
+						"targetID": 2,
+						"votes": 3
+					},
+					{
+						"targetID": 10,
+						"votes": 1
+					},
+					{
+						"targetID": 125,
+						"votes": 3
+					}
+				],
+				"eliminated": 2
+			}
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"lobbyId\": 202,\r\n  \"voterId\": 131,\r\n  \"roleId\": 6,\r\n  \"targetId\": 125\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8081/api/voting/cast",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"voting",
+						"cast"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

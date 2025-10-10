@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "3a65654a-e0ce-40ad-99a9-df5e4bf4260c",
+		"name": "RoleplayService Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "48647585",
+		"_collection_link": "https://catalina-ernu-1898933.postman.co/workspace/Catalina-Ernu's-Workspace~9eeefb57-bbf8-490b-82f1-f9ee1ab09fc8/collection/48647585-3a65654a-e0ce-40ad-99a9-df5e4bf4260c?action=share&source=collection_link&creator=48647585"
+	},
+	"item": [
+		{
+			"name": "Perform Role Action",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"lobbyId\": 2001,\r\n  \"characterId\": 101,\r\n  \"action\": \"investigate\",\r\n  \"targetId\": 102\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/roleplay/actions/perform",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"roleplay",
+						"actions",
+						"perform"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Allowed Actions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5001/api/roleplay/characters/101/actions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"roleplay",
+						"characters",
+						"101",
+						"actions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Record Announcement",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"lobbyId\": 21,\r\n  \"message\": \"The Mayor has spoken in Town Square.\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5001/api/roleplay/announcements",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"api",
+						"roleplay",
+						"announcements"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
