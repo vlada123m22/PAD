@@ -31,3 +31,6 @@
 [submodule "CharacterService"]
 	path = CharacterService
 	url = https://github.com/livia994/CharacterService.git
+[submodule "gateway"]
+	path = gateway
+	url = https://github.com/vlada123m22/PAD_Gateway_T9.git
