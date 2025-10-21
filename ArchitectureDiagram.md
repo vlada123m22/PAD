@@ -2,7 +2,7 @@
 
 This diagram illustrates the microservice architecture for the Mafia Game. Each service is independent, owns its data, and communicates with others to implement the game rules, phases, and player interactions.
 
-![Mafia Game Architecture](./ArchitectureDiagram.png)
+![Mafia Game Architecture](./ArchitectureDiagram2.png)
 
 ## Core Services
 
