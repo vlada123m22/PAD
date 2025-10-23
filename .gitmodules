@@ -28,3 +28,6 @@
 [submodule "gateway"]
 	path = gateway
 	url = https://github.com/vlada123m22/PAD_Gateway_T9.git
+[submodule "ServiceDiscovery"]
+	path = ServiceDiscovery
+	url = https://github.com/nadea-b/service-discovery.git
