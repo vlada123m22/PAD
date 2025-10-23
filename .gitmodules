@@ -1,15 +1,9 @@
-<<<<<<< HEAD
 [submodule "Vlada"]
 	path = Vlada
 	url = https://github.com/vlada123m22/PAD-Vlada-5.git
-[submodule "UserManagementService"]
-	path = UserManagementService
-	url = https://github.com/nadea-b/UserManagementService.git
-=======
 [submodule "task_sservice"]
 	path = task_sservice
 	url = https://github.com/vlada123m22/task_service.git
-
 [submodule "UserManagementService"]
 	path = UserManagementService
 	url = https://github.com/nadea-b/UserManagementService.git
@@ -31,4 +25,6 @@
 [submodule "CharacterService"]
 	path = CharacterService
 	url = https://github.com/livia994/CharacterService.git
->>>>>>> 28e364662475432d5c69a3d0b53011af8c95bf70
+[submodule "gateway"]
+	path = gateway
+	url = https://github.com/vlada123m22/PAD_Gateway_T9.git
