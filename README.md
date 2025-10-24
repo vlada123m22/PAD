@@ -1,6 +1,8 @@
 # Mafia Platform
 ## Github workflow description
 
+## Github workflow description
+
 #### Branches and branches naming conventions
 
 - main - the main branch of the project
@@ -13,9 +15,8 @@
 
 #### Pull requests & Merging strategy:
 
-- A PR needs one approval before being merged
-- Merging strategy: squash and merge, merge commit, rebase
-- No pull requests to main will be approved, until the changes are tested in develop
+- A PR needs one approval before being merged (unless the user who is pushing has bybass permissions)
+- Merging strategy: merge commit
 
 ## Rinning Team Services
 1. Creating and setting up the .env file:
