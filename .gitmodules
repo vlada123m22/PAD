@@ -1,18 +1,12 @@
 [submodule "Vlada"]
 	path = Vlada
 	url = https://github.com/vlada123m22/PAD-Vlada-5.git
-[submodule "Roleplay-Service"]
-	path = Roleplay-Service
-	url = https://github.com/Ernu-Catalina/Roleplay-Service.git
-[submodule "Shop-Service"]
-	path = Shop-Service
-	url = https://github.com/Ernu-Catalina/Shop-Service.git
-[submodule "UserManagementService"]
-	path = UserManagementService
-	url = https://github.com/nadea-b/UserManagementService.git
 [submodule "task_sservice"]
 	path = task_sservice
 	url = https://github.com/vlada123m22/task_service.git
+[submodule "UserManagementService"]
+	path = UserManagementService
+	url = https://github.com/nadea-b/UserManagementService.git
 [submodule "GameService"]
 	path = GameService
 	url = https://github.com/nadea-b/GameService.git
@@ -34,3 +28,6 @@
 [submodule "gateway"]
 	path = gateway
 	url = https://github.com/vlada123m22/PAD_Gateway_T9.git
+[submodule "ServiceDiscovery"]
+	path = ServiceDiscovery
+	url = https://github.com/nadea-b/service-discovery.git
