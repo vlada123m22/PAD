@@ -31,3 +31,9 @@
 [submodule "ServiceDiscovery"]
 	path = ServiceDiscovery
 	url = https://github.com/nadea-b/service-discovery.git
+[submodule "ShopService"]
+	path = ShopService
+	url = https://github.com/Ernu-Catalina/Shop-Service.git
+[submodule "RoleplayService"]
+	path = RoleplayService
+	url = https://github.com/Ernu-Catalina/Roleplay-Service.git
